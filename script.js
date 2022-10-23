@@ -1,5 +1,6 @@
 Tone.Transport.bpm.value = 120
 const Major = [0,2,4,5,7,9,11,12];
+const startingNote = 60
 
 // randArr = Array.from(
 //     {length: 16}, 
@@ -9,10 +10,12 @@ const Major = [0,2,4,5,7,9,11,12];
 let kickArrEl = document.getElementById('kick-pattern')
 let startEl = document.getElementById('start')
 let stopEl = document.getElementById('stop')
+let CMajor =[]
 
-
-
-
+for(let i=0; i<Major.length; i++) {
+    CMajor.push( Major[i] + startingNote );
+}
+console.log(CMajor)
 
 const kickDrum = new Tone.MembraneSynth({
     volume: 6,
@@ -43,7 +46,7 @@ let setKickPattern = () => {
 
   
 
-    Object.values(kicks).forEach(value => value.note = (Major[Math.floor(Math.random()*Major.length)])*4 );
+    Object.values(kicks).forEach(value => value.note = (CMajor[Math.floor(Math.random()*CMajor.length)]) );
     //loops through kicks array and sets velocity to either on or off * random
     Object.values(kicks).forEach(value => value.velocity = (Math.floor(Math.random()*2))*(Math.random() * 1));
 }
