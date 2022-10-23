@@ -1,20 +1,19 @@
 Tone.Transport.bpm.value = 120
 
 
-let randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
-const rndInt = randomIntFromInterval(1, 8)
-console.log(rndInt)
+// let randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
+// const rndInt = randomIntFromInterval(1, 8)
 
 
-let x = Array(16).fill().map(
-    () => Array(3).fill().map(
-        () => Math.floor(Math.random() * 10)
-    )
-);
-console.log(x)
+// let x = Array(16).fill().map(
+//     () => Array(3).fill().map(
+//         () => Math.floor(Math.random() * 10)
+//     )
+// );
 
-function rgb(r, g, b) {
-    return ["rgb(", r, ",", g, ",", b, ")"].join("");
+
+function rgba(r, g, b, a) {
+    return ["rgba(", r, ",", g, ",", b, ",", a, ")"].join("");
 }
 
 //scales
@@ -51,50 +50,50 @@ let kicks = []
 
 
 
-//for each increase in slider value add in a random note from note
 
-
-
-
-let setKickPattern = () => {
-    Object.values(kicks).forEach(value => value.note = (CMajor[Math.floor(Math.random() * CMajor.length)]));
-    //loops through kicks array and sets velocity to either on or off * random
-    Object.values(kicks).forEach(value => value.velocity = (Math.floor(Math.random() * 2)) * (Math.random() * 1));
-
-    Object.values(kicks).forEach(value => {
-        console.log(value.velocity)
-        console.log('hey')
-        let stepButton = document.createElement('button')
-        console.log(Object.values(kicks))
-        stepButton.style.background = rgb(255, value.velocity * 255, 50)
-        stepButton.innerText = 'hey'
-        kickStepsEl.appendChild(stepButton)
-
-
-    })
-
+const setKickPattern = () => {
+    kickStepsEl.innerHTML = ''
+    for (let i = 0; i < 4; i++) {
+        for (let x = 0; x < 4; x++) {
+            let step = getStep(i, x)
+            createStepButton(step.velocity);
+            kicks.push(step)
+        }
+    }
 }
-// const midi = Tone.Frequency("C3").toMidi();
-// console.log(midi);
 
-kicks = [
-    { time: '0:0:0', note: 32, velocity: 0 },
-    { time: '0:0:1', note: 32, velocity: 0 },
-    { time: '0:0:2', note: 32, velocity: 0 },
-    { time: '0:0:3', note: 32, velocity: 0 },
-    { time: '0:1:0', note: 32, velocity: 0 },
-    { time: '0:1:1', note: 32, velocity: 0 },
-    { time: '0:1:2', note: 32, velocity: 0 },
-    { time: '0:1:3', note: 32, velocity: 0 },
-    { time: '0:2:0', note: 32, velocity: 0 },
-    { time: '0:2:1', note: 32, velocity: 0 },
-    { time: '0:2:2', note: 32, velocity: 0 },
-    { time: '0:2:3', note: 32, velocity: 0 },
-    { time: '0:3:0', note: 32, velocity: 0 },
-    { time: '0:3:1', note: 32, velocity: 0 },
-    { time: '0:3:2', note: 32, velocity: 0 },
-    { time: '0:3:3', note: 32, velocity: 0 },
-]
+function startKickPart() {
+    const kickPart = new Tone.Part((time, value) => {
+        kickDrum.triggerAttackRelease(value.note, '8n', time, value.velocity)
+    }, kicks).start(0);
+    kickPart.loop = true
+}
+
+function getStep(bar, sixteenth) {
+    return {
+        time: `0:${bar}:${sixteenth}`,
+        note: getNote(bar),
+        velocity: (Math.floor(Math.random() * 2)) * (Math.random() * 1)
+    }
+}
+
+function getNote(bar) {
+    if (bar > 2) {
+        return (CMajor[Math.floor(Math.random() * CMajor.length)])
+    } else {
+        return (CMajor[Math.floor(Math.random() * CMajor.length)])
+    }
+}
+
+function createStepButton(velocity) {
+    let stepButton = document.createElement('button')
+    if (velocity === 0) {
+        stepButton.style.background = rgba(255, 255, 255, 1)
+    } else {
+        stepButton.style.background = rgba(100, 0, 255, velocity + 0.1)
+    }
+    kickStepsEl.appendChild(stepButton)
+}
 
 
 
@@ -104,17 +103,16 @@ kicks = [
 
 
 
-const kickPart = new Tone.Part((time, value) => { kickDrum.triggerAttackRelease(value.note, '8n', time, value.velocity) },
-    kicks).start(0);
-kickPart.loop = true
+
+
+
+
+
 
 
 
 let start = () => {
     Tone.Transport.start()
-    console.log(kickPart)
-    console.log(kicks)
-
 }
 
 let stop = () => {
