@@ -40,9 +40,10 @@ console.log(x)
 
 
 let setKickPattern = () => {
-    let randomNote = Major[Math.floor(Math.random()*Major.length)]
-    
-    Object.values(kicks).forEach(value => value.note = randomNote );
+
+  
+
+    Object.values(kicks).forEach(value => value.note = (Major[Math.floor(Math.random()*Major.length)])*4 );
     //loops through kicks array and sets velocity to either on or off * random
     Object.values(kicks).forEach(value => value.velocity = (Math.floor(Math.random()*2))*(Math.random() * 1));
 }
