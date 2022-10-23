@@ -1,37 +1,5 @@
 Tone.Transport.bpm.value = 120
-const Major = [0, 2, 4, 5, 7, 9, 11, 12];
-const startingNote = 60
 
-// randArr = Array.from(
-//     {length: 16}, 
-//     () => Math.floor(Math.random() * 2)); 
-//     console.log('clicked')
-
-let kickArrEl = document.getElementById('kick-pattern')
-let kickStepsEl = document.getElementById('kick-steps')
-let startEl = document.getElementById('start')
-let stopEl = document.getElementById('stop')
-let CMajor = []
-
-for (let i = 0; i < Major.length; i++) {
-    CMajor.push(Major[i] + startingNote);
-}
-
-
-const kickDrum = new Tone.MembraneSynth({
-    volume: 6,
-}).toDestination();
-const lowPass = new Tone.Filter({
-    frequency: 8000,
-}).toDestination();
-
-let randArr = []
-let snareArr = []
-let kicks = []
-
-function rgb(r, g, b){
-    return ["rgb(",r,",",g,",",b,")"].join("");
-  }
 
 let randomIntFromInterval = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
 const rndInt = randomIntFromInterval(1, 8)
@@ -44,6 +12,44 @@ let x = Array(16).fill().map(
     )
 );
 console.log(x)
+
+function rgb(r, g, b) {
+    return ["rgb(", r, ",", g, ",", b, ")"].join("");
+}
+
+//scales
+let CMajor = []
+const Major = [0, 2, 4, 5, 7, 9, 11, 12];
+let startingNote = 60
+for (let i = 0; i < Major.length; i++) {
+    CMajor.push(Major[i] + startingNote);
+}
+
+
+//dom elements
+let kickArrEl = document.getElementById('kick-pattern')
+let kickStepsEl = document.getElementById('kick-steps')
+let startEl = document.getElementById('start')
+let stopEl = document.getElementById('stop')
+
+
+
+
+//instruments
+const kickDrum = new Tone.MembraneSynth({
+    volume: 6,
+}).toDestination();
+const lowPass = new Tone.Filter({
+    frequency: 8000,
+}).toDestination();
+
+
+
+let kicks = []
+
+
+
+
 
 //for each increase in slider value add in a random note from note
 
@@ -60,7 +66,7 @@ let setKickPattern = () => {
         console.log('hey')
         let stepButton = document.createElement('button')
         console.log(Object.values(kicks))
-        stepButton.style.background = rgb(255,value.velocity*255,50)
+        stepButton.style.background = rgb(255, value.velocity * 255, 50)
         stepButton.innerText = 'hey'
         kickStepsEl.appendChild(stepButton)
 
