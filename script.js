@@ -60,8 +60,8 @@ const setKickPattern = () => {
             kicks.push(step)
         }
     }
+    startKickPart()
 }
-
 function startKickPart() {
     const kickPart = new Tone.Part((time, value) => {
         kickDrum.triggerAttackRelease(value.note, '8n', time, value.velocity)
@@ -71,19 +71,30 @@ function startKickPart() {
 
 function getStep(bar, sixteenth) {
     return {
-        time: `0:${bar}:${sixteenth}`,
-        note: getNote(bar),
-        velocity: (Math.floor(Math.random() * 2)) * (Math.random() * 1)
+        time: getTime(bar, sixteenth),
+        note: getPitch(bar),
+        velocity: getVelocity()
     }
 }
 
-function getNote(bar) {
+function getTime(bar, sixteenth) {
+    return `0:${bar}:${sixteenth}`
+}
+
+function getVelocity() {
+    return (Math.floor(Math.random() * 2)) * (Math.random() * 1)
+}
+
+function getPitch(bar) {
     if (bar > 2) {
         return (CMajor[Math.floor(Math.random() * CMajor.length)])
     } else {
         return (CMajor[Math.floor(Math.random() * CMajor.length)])
     }
 }
+
+
+
 
 function createStepButton(velocity) {
     let stepButton = document.createElement('button')
@@ -93,6 +104,7 @@ function createStepButton(velocity) {
         stepButton.style.background = rgba(100, 0, 255, velocity + 0.1)
     }
     kickStepsEl.appendChild(stepButton)
+    
 }
 
 
